@@ -1,29 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>StellarOne Health</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: linear-gradient(to right, #f7f7f7, #e0e7ff);
-      padding: 50px;
-      text-align: center;
-    }
-    h1 {
-      color: #4f46e5;
-    }
-    a {
-      text-decoration: none;
-      color: #6366f1;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StellarOne Health - AI-Powered Revenue Cycle Management</title>
+    <meta name="description" content="Transform your healthcare revenue cycle with AI. Reduce denials by 95%, accelerate collections, and boost revenue with StellarOne Health's RCM platform.">
+    
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="StellarOne Health - AI-Powered RCM Platform">
+    <meta property="og:description" content="The only RCM platform that automates claims, reduces denials by 95%, and gets you paid faster.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Link to your external CSS file -->
+    <link rel="stylesheet" href="website-styles.css">
 </head>
 <body>
-  <h1>🚀 Welcome to StellarOne Health</h1>
-  <p>AI-powered Revenue Cycle Management Platform</p>
-  <a href="/api/metrics">Check Live Metrics API</a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-brand" aria-label="StellarOne Health Home">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                    </svg>
+                    <div class="brand-dot"></div>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">StellarOne Health</span>
+                    <span class="brand-tagline">AI-Powered RCM Platform</span>
+                </div>
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+                <li><a href="#ai-features" class="nav-link">AI Features</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <button class="btn btn-primary" data-section="contact">Request Demo</button>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section hero-section">
+             <div class="container">
+                <div class="hero-content">
+                    <div class="status-badge">
+                        <div class="status-dot"></div>
+                        <span>Live Platform • 500+ Healthcare Providers</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        Healthcare Revenue
+                        <br>
+                        <span class="text-gradient">Made Simple</span>
+                    </h1>
+                    
+                    <p class="hero-description">
+                        The only RCM platform that automates claims, reduces denials by 95%, 
+                        and gets you paid faster. Built specifically for modern healthcare providers.
+                    </p>
+
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-large" data-section="dashboard">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                                <polygon points="5,3 19,12 5,21"></polygon>
+                            </svg>
+                            Try Live Dashboard
+                        </button>
+                        <button class="btn btn-outline btn-large" data-section="ai-features">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                                <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-4A2.5 2.5 0 0 1 9.5 2Z"></path>
+                            </svg>
+                            Explore AI Features
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section dashboard-section hidden">
+            <div class="container">
+                <div class="dashboard-header">
+                    <div>
+                        <h1 class="page-title">RCM Overview Dashboard</h1>
+                        <p class="page-description">Real-time revenue cycle monitoring</p>
+                    </div>
+                    <div class="dashboard-controls">
+                        <select id="time-period" class="time-select" aria-label="Select time period for dashboard KPIs">
+                            <option value="30">Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="365">Last Year</option>
+                        </select>
+                        <button class="btn btn-outline">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7,10 12,15 17,10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+                <div class="kpi-grid" id="kpi-grid">
+                    <!-- KPI cards will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Features Section -->
+        <section id="ai-features" class="section ai-section hidden">
+            <div class="container">
+                <div class="section-header">
+                    <h1 class="page-title">AI-Powered Features</h1>
+                    <p class="page-description">Intelligent automation for healthcare revenue cycle management</p>
+                </div>
+                <div class="chat-interface">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message">
+                            <div class="message-avatar">AI</div>
+                            <div class="message-content">
+                                Hello! I'm Power_AI, your sophisticated RCM assistant. How can I help optimize your revenue cycle today?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" id="chat-input" placeholder="Ask me about claims, denials, or revenue..." class="chat-input">
+                        <button id="chat-send" class="chat-send" aria-label="Send Chat Message">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section contact-section hidden">
+            <div class="container">
+                 <div class="contact-form-container">
+                    <h1 class="page-title">Request a Demo</h1>
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="organization">Healthcare Organization</label>
+                            <input type="text" id="organization" name="organization" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Tell us about your current RCM challenges..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large btn-full">
+                            Request Demo
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-copyright">
+                    <p>&copy; 2025 StellarOne Health. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Link to your consolidated JavaScript file before the closing body tag -->
+    <script src="website-app.js"></script>
 </body>
 </html>
