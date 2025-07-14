@@ -1,15 +1,19 @@
 {
-  "name": "stellarone-health-website",
+  "name": "stellarone-health-fullstack",
   "version": "1.0.0",
-  "description": "A modern, responsive single-page website for StellarOne Health’s AI-driven Revenue Cycle Management (RCM) platform.",
-  "main": "index.html",
+  "description": "A dynamic, AI-powered full stack website for StellarOne Health Technologies Pvt. Ltd.",
+  "main": "server.js",
   "scripts": {
-    "start": "live-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "author": "",
+  "author": "StellarOne Founders",
   "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
   "devDependencies": {
-    "live-server": "^1.2.2"
+    "nodemon": "^3.1.0"
   }
 }
