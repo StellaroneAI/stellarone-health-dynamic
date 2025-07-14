@@ -1,179 +1,94 @@
-document.addEventListener('DOMContentLoaded', () => {
+// StellarOne Health - Full Stack Server
+// Main Express.js application file
 
-    // --- Data ---
-    const kpiData = {
-        30: { revenue: { value: '$2.8M', change: '+18%' }, accuracy: { value: '99.2%', change: '+12%' }, claims: { value: '15.8K', change: '+25%' }, days: { value: '18.5', change: '-22%' }},
-        90: { revenue: { value: '$8.4M', change: '+22%' }, accuracy: { value: '98.9%', change: '+15%' }, claims: { value: '47.2K', change: '+30%' }, days: { value: '19.2', change: '-18%' }},
-        365: { revenue: { value: '$34.2M', change: '+35%' }, accuracy: { value: '98.4%', change: '+28%' }, claims: { value: '189K', change: '+42%' }, days: { value: '21.8', change: '-25%' }}
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+
+// Initialize the Express app
+const app = express();
+
+// Environment setup from .env file or default to 3000
+const PORT = process.env.PORT || 3000;
+
+// --- Middleware ---
+app.use(cors()); // Enable Cross-Origin Resource Sharing for all routes
+app.use(express.json()); // To parse JSON request bodies
+app.use(express.urlencoded({ extended: true })); // To parse URL-encoded request bodies
+
+// Serve the static frontend files (HTML, CSS, JS) from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// --- API Endpoints ---
+
+/**
+ * @route   GET /api/metrics
+ * @desc    Returns live Key Performance Indicators (KPIs).
+ * @access  Public
+ */
+app.get('/api/metrics', (req, res) => {
+    console.log(`[${new Date().toLocaleTimeString()}] GET /api/metrics`);
+    // In a real application, this data would be fetched from a database.
+    const mockMetrics = {
+        revenue: { value: '₹59L', change: '+12%' },
+        claims: { value: '15,847', change: '+8.2%' },
+        denialRate: { value: '3.5%', change: '-45%' },
+        productivity: { value: '53', change: '+5%' }
     };
+    res.status(200).json(mockMetrics);
+});
 
-    // --- Functions ---
+/**
+ * @route   POST /api/contact
+ * @desc    Accepts contact form submissions.
+ * @access  Public
+ */
+app.post('/api/contact', (req, res) => {
+    const { name, email, organization, message } = req.body;
+    console.log(`[${new Date().toLocaleTimeString()}] POST /api/contact`);
+    console.log('Received Form Submission:', { name, email, organization, message });
+
+    // Basic validation
+    if (!name || !email || !organization) {
+        return res.status(400).json({ success: false, message: 'Missing required fields.' });
+    }
+
+    // TODO: Add logic here to save to a database or send an email.
     
-    /**
-     * Hides all sections and shows the one with the specified ID.
-     * @param {string} sectionId The ID of the section to show.
-     */
-    function showSection(sectionId) {
-        document.querySelectorAll('section[id]').forEach(section => {
-            section.classList.add('hidden');
-        });
+    res.status(200).json({ success: true, message: 'Your message has been received! We will be in touch shortly.' });
+});
 
-        const targetSection = document.getElementById(sectionId);
-        if (targetSection) {
-            targetSection.classList.remove('hidden');
-        }
+/**
+ * @route   POST /api/ai/chat
+ * @desc    Handles prompts for the "Macha Assistant" AI chatbot.
+ * @access  Public
+ */
+app.post('/api/ai/chat', (req, res) => {
+    const { message } = req.body;
+    console.log(`[${new Date().toLocaleTimeString()}] POST /api/ai/chat - Message: "${message}"`);
 
-        // Update navigation active state
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${sectionId}`) {
-                link.classList.add('active');
-            }
-        });
-        
-        if (sectionId === 'dashboard') {
-            updateKPIs();
-        }
+    if (!message) {
+        return res.status(400).json({ success: false, message: 'Message cannot be empty.' });
     }
 
-    /**
-     * Updates the KPI cards on the dashboard based on the selected time period.
-     */
-    function updateKPIs() {
-        const timePeriodSelect = document.getElementById('time-period');
-        const kpiGrid = document.getElementById('kpi-grid');
-        
-        if (!timePeriodSelect || !kpiGrid) return;
+    // --- Simulated AI Logic ---
+    // In a real application, you would call a service like OpenAI here.
+    const lowerMessage = message.toLowerCase();
+    let aiResponse = "I can help with questions about claims, denials, and revenue. How can I assist you today?";
 
-        const period = timePeriodSelect.value;
-        const data = kpiData[period];
-
-        kpiGrid.innerHTML = `
-            <div class="kpi-card"><div class="metric-value">${data.revenue.value}</div><div class="metric-label">Total Revenue (${data.revenue.change})</div></div>
-            <div class="kpi-card"><div class="metric-value">${data.accuracy.value}</div><div class="metric-label">Claim Accuracy (${data.accuracy.change})</div></div>
-            <div class="kpi-card"><div class="metric-value">${data.claims.value}</div><div class="metric-label">Claims Processed (${data.claims.change})</div></div>
-            <div class="kpi-card"><div class="metric-value">${data.days.value}</div><div class="metric-label">Avg Collection Days (${data.days.change})</div></div>
-        `;
-    }
-
-    /**
-     * Generates a simulated AI response based on keywords in the user's message.
-     * @param {string} message The user's input message.
-     * @returns {string} The simulated AI response.
-     */
-    function getAIResponse(message) {
-        const lowerMessage = message.toLowerCase();
-        if (lowerMessage.includes('denial') || lowerMessage.includes('reject')) {
-            return "Our AI system has reduced denial rates by 95% on average by catching common errors in coding, documentation, and eligibility. Would you like to explore a specific area?";
-        } else if (lowerMessage.includes('revenue') || lowerMessage.includes('money')) {
-            return "We help optimize revenue by accelerating claim processing to an average of 18 days and automating follow-ups. This typically increases collections by over 20%.";
-        } else if (lowerMessage.includes('claim') || lowerMessage.includes('billing')) {
-            return "Our smart claim validation catches 99.8% of errors before submission by checking coding accuracy, documentation, and payer-specific requirements in real-time.";
-        } else {
-            return "Thanks for your question! I can assist with claim processing, denial management, and revenue optimization. What specific area would you like to explore?";
-        }
+    if (lowerMessage.includes("denial")) {
+        aiResponse = "We reduce denials by using our DenialAI module to identify root causes and suggest corrective actions before claims are even resubmitted.";
+    } else if (lowerMessage.includes("revenue")) {
+        aiResponse = `Our current monthly revenue is ₹59 Lakhs. We boost client revenue by ensuring higher clean claim rates and faster payment cycles.`;
+    } else if (lowerMessage.includes("patient statement")) {
+        aiResponse = "Statement generation is a planned feature. Currently, our platform focuses on optimizing the provider-side revenue cycle.";
     }
     
-    /**
-     * Appends a message to the chat interface.
-     * @param {string} text The message text to display.
-     * @param {string} sender The sender of the message ('user' or 'ai').
-     */
-    function addMessageToChat(text, sender) {
-        const messagesContainer = document.getElementById('chat-messages');
-        if (!messagesContainer) return;
+    res.status(200).json({ response: aiResponse });
+});
 
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message';
-        
-        if (sender === 'user') {
-            messageDiv.innerHTML = `<div class="message-content" style="background: var(--color-blue-600); color: var(--color-white); margin-left: auto;">${text}</div>`;
-        } else {
-            messageDiv.innerHTML = `<div class="message-avatar">AI</div><div class="message-content">${text}</div>`;
-        }
-        
-        messagesContainer.appendChild(messageDiv);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-
-    // --- Event Listeners Setup ---
-
-    // Use Event Delegation for Navigation
-    document.body.addEventListener('click', (e) => {
-        const target = e.target.closest('a[href^="#"], button[data-section]');
-        if (target) {
-            e.preventDefault();
-            const sectionId = target.dataset.section || target.getAttribute('href').substring(1);
-            if (sectionId) {
-                showSection(sectionId);
-            }
-        }
-    });
-
-    // Mobile Navigation Toggle
-    const navToggle = document.getElementById('nav-toggle');
-    if (navToggle) {
-        navToggle.addEventListener('click', () => {
-            const navMenu = document.getElementById('nav-menu');
-            if (navMenu) {
-                // Toggling a class is better for CSS control
-                navMenu.classList.toggle('active-mobile'); 
-            }
-        });
-    }
-
-    // Dashboard Time Period Selector
-    const timePeriodSelect = document.getElementById('time-period');
-    if (timePeriodSelect) {
-        timePeriodSelect.addEventListener('change', updateKPIs);
-    }
-    
-    // AI Chat Submission
-    const chatSendButton = document.getElementById('chat-send');
-    const chatInput = document.getElementById('chat-input');
-    
-    function handleChatSubmit() {
-        if (chatInput && chatInput.value.trim() !== '') {
-            const userMessage = chatInput.value.trim();
-            addMessageToChat(userMessage, 'user');
-            chatInput.value = '';
-
-            setTimeout(() => {
-                const aiResponse = getAIResponse(userMessage);
-                addMessageToChat(aiResponse, 'ai');
-            }, 1000);
-        }
-    }
-
-    if (chatSendButton) {
-        chatSendButton.addEventListener('click', handleChatSubmit);
-    }
-    if (chatInput) {
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleChatSubmit();
-            }
-        });
-    }
-
-    // Contact Form Submission
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const submitButton = contactForm.querySelector('button[type="submit"]');
-            submitButton.textContent = 'Submitting...';
-            submitButton.disabled = true;
-
-            setTimeout(() => {
-                alert('Thank you for your interest! Our team will contact you within 24 hours.');
-                contactForm.reset();
-                submitButton.textContent = 'Request Demo';
-                submitButton.disabled = false;
-            }, 1500);
-        });
-    }
-
-    // --- Initializer ---
-    showSection('home'); // Show home section by default
+// --- Server Initialization ---
+app.listen(PORT, () => {
+    console.log(`StellarOne Health server is running on http://localhost:${PORT}`);
+    console.log(`Frontend is served from the 'public' directory.`);
 });
