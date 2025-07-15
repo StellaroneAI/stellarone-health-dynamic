@@ -19,3 +19,17 @@
     "nodemon": "^3.1.0"
   }
 }
+{
+  "roleName": "DatabaseManager",
+  "actions": [
+    { "action": "enableProfiler", "resources": [{ "db": "", "collection": "" }] },
+    { "action": "dropDatabase", "resources": [{ "db": "", "collection": "" }] },
+    { "action": "renameCollectionSameDB", "resources": [{ "db": "", "collection": "" }] },
+    { "action": "dbStats", "resources": [{ "db": "", "collection": "" }] },
+    { "action": "listCollections", "resources": [{ "db": "", "collection": "" }] },
+    { "action": "read", "resources": [{ "db": "", "collection": "" }] },
+    { "action": "readWrite", "resources": [{ "db": "", "collection": "" }] },
+    { "action": "dbAdmin", "resources": [{ "db": "", "collection": "" }] }
+  ],
+  "inheritedRoles": []
+}
